@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Por Modelo — RodaPerfeita</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">RODA<span>PERFEITA</span></a>
+  <div class="nav-links">
+    <a href="index.html#escolher" class="active">Personalizar</a>
+    <a href="#">Catálogo</a>
+    <a href="#">Contato</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <a class="back-btn" href="index.html#escolher">←</a>
+  <h1>Por <span>Modelo</span></h1>
+</div>
+
+<div class="section" style="padding-top:0;">
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step active"><span class="step-num">1</span><span>Dados</span></div>
+    <div class="step-divider"></div>
+    <div class="step active"><span class="step-num">2</span><span>Preview IA</span></div>
+    <div class="step-divider"></div>
+    <div class="step"><span class="step-num">3</span><span>Roda</span></div>
+    <div class="step-divider"></div>
+    <div class="step"><span class="step-num">4</span><span>Prompt final</span></div>
+  </div>
+
+  <!-- 4 DROPDOWNS -->
+  <div class="row-2" style="margin-bottom:1.5rem;">
+    <div>
+      <label class="field-label">1 — Marca</label>
+      <div class="select-wrapper">
+        <select id="marca" onchange="updateModelos(); tryGenerate();">
+          <option value="">Selecione a marca</option>
+          <option>Toyota</option><option>Honda</option><option>Volkswagen</option>
+          <option>Chevrolet</option><option>Fiat</option><option>Hyundai</option>
+          <option>Renault</option><option>Ford</option><option>Jeep</option>
+          <option>Nissan</option><option>BMW</option><option>Mercedes-Benz</option>
+          <option>Audi</option><option>Mitsubishi</option><option>Kia</option>
+          <option>Peugeot</option><option>Citroën</option><option>Subaru</option>
+          <option>Volvo</option><option>Land Rover</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label class="field-label">2 — Ano de fabricação</label>
+      <div class="select-wrapper">
+        <select id="ano" onchange="tryGenerate()">
+          <option value="">Selecione o ano</option>
+          <script>for(let y=2026;y>=1990;y--) document.write(`<option>${y}</option>`)</script>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row-2" style="margin-bottom:2rem;">
+    <div>
+      <label class="field-label">3 — Modelo</label>
+      <div class="select-wrapper">
+        <select id="modelo-car" onchange="tryGenerate()">
+          <option value="">Selecione o modelo</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label class="field-label">4 — Cor</label>
+      <div class="select-wrapper">
+        <select id="cor" onchange="tryGenerate()">
+          <option value="">Selecione a cor</option>
+          <option>Branco Pérola</option><option>Preto Metálico</option><option>Prata</option>
+          <option>Cinza Grafite</option><option>Vermelho</option><option>Azul</option>
+          <option>Azul Metálico</option><option>Verde</option><option>Amarelo</option>
+          <option>Laranja</option><option>Bege</option><option>Marrom</option>
+          <option>Champanhe</option><option>Dourado</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI PREVIEW BOX -->
+  <div style="margin-bottom:2rem;">
+    <label class="field-label" style="margin-bottom:0.8rem;">Preview gerado por IA</label>
+    <div class="car-preview-wrap" id="car-preview-wrap">
+      <svg class="garage-bg-svg" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <rect width="1000" height="300" fill="#050505"/>
+        <rect y="260" width="1000" height="40" fill="#080808"/>
+        <rect x="320" y="0" width="5" height="300" fill="#0e0e0e"/>
+        <rect x="680" y="0" width="5" height="300" fill="#0e0e0e"/>
+        <rect x="316" y="0" width="170" height="5" fill="#111"/>
+        <rect x="676" y="0" width="170" height="5" fill="#111"/>
+        <ellipse cx="400" cy="2" rx="32" ry="16" fill="#c9a84c" opacity="0.1"/>
+        <ellipse cx="760" cy="2" rx="32" ry="16" fill="#c9a84c" opacity="0.1"/>
+        <line x1="0" y1="260" x2="1000" y2="260" stroke="#111" stroke-width="1"/>
+        <line x1="0" y1="265" x2="1000" y2="265" stroke="#0a0a0a" stroke-width="0.5"/>
+      </svg>
+      <div class="ai-preview-box" id="ai-preview-box">
+        <div class="ai-empty">
+          <span class="ai-empty-icon">🚗</span>
+          <div class="ai-empty-title">Preencha os 4 campos acima</div>
+          <div class="ai-empty-sub">A IA descreverá seu carro automaticamente</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICE SLIDER -->
+  <div class="slider-wrap">
+    <div class="slider-header">
+      <label class="field-label">Faixa de preço das rodas</label>
+      <div class="slider-values">
+        <span class="slider-val" id="price-min">R$ 800</span>
+        <span style="color:#333;align-self:center;">—</span>
+        <span class="slider-val" id="price-max">R$ 8.000</span>
+      </div>
+    </div>
+    <div class="dual-range">
+      <div class="range-track"></div>
+      <div class="range-fill" id="range-fill"></div>
+      <input type="range" id="range-min" min="500" max="15000" step="100" value="800"
+             oninput="updateDualRange('range-min','range-max','price-min','price-max','range-fill')">
+      <input type="range" id="range-max" min="500" max="15000" step="100" value="8000"
+             oninput="updateDualRange('range-min','range-max','price-min','price-max','range-fill')">
+    </div>
+  </div>
+
+  <!-- WHEEL PICKER -->
+  <div class="field-group">
+    <label class="field-label">Escolha a roda</label>
+    <input type="text" class="wheel-search-input" id="wheel-search"
+           placeholder="Buscar por nome ou marca..."
+           oninput="renderWheelList('range-min','range-max','wheel-search','wheel-list')"
+           onfocus="openWheelList('range-min','range-max','wheel-search','wheel-list')"
+           onblur="closeWheelListDelay('wheel-list')">
+    <div class="wheel-list" id="wheel-list"></div>
+  </div>
+
+  <button class="btn-primary" onclick="generateModeloResult()" style="width:100%;margin-top:0.5rem;">
+    Gerar prompt completo com roda →
+  </button>
+
+  <!-- RESULT -->
+  <div class="result-section" id="modelo-result" style="display:none;">
+    <div class="result-header">
+      <div class="result-car-name" id="result-title">—</div>
+      <div class="result-wheel-name" id="result-wheel">—</div>
+    </div>
+    <div class="result-body">
+      <label class="field-label" style="margin-bottom:0.6rem;">Prompt para IA de imagem (inglês)</label>
+      <div class="result-prompt" id="modelo-prompt-text"></div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <button class="copy-btn" onclick="copyEl('modelo-prompt-text')">Copiar prompt</button>
+      </div>
+      <div class="alert" style="margin-top:1rem;">
+        💡 Cole este prompt no Midjourney, DALL-E 3 ou Stable Diffusion para gerar a imagem.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<footer><p>© 2025 RodaPerfeita · Para modelos comercializados no Brasil</p></footer>
+
+<script src="app.js"></script>
+<script>
+  // Init slider
+  updateDualRange('range-min', 'range-max', 'price-min', 'price-max', 'range-fill');
+
+  // Populate model dropdown
+  function updateModelos() {
+    const m   = document.getElementById('marca').value;
+    const sel = document.getElementById('modelo-car');
+    sel.innerHTML = '<option value="">Selecione o modelo</option>';
+    (MODELOS[m] || []).forEach(v => {
+      const o = document.createElement('option');
+      o.value = o.textContent = v;
+      sel.appendChild(o);
+    });
+  }
+
+  // Debounced AI preview trigger
+  let debounce = null, lastKey = '';
+
+  function tryGenerate() {
+    const marca  = document.getElementById('marca').value;
+    const ano    = document.getElementById('ano').value;
+    const modelo = document.getElementById('modelo-car').value;
+    const cor    = document.getElementById('cor').value;
+    if (!marca || !ano || !modelo || !cor) return;
+    const key = `${marca}|${ano}|${modelo}|${cor}`;
+    if (key === lastKey) return;
+    lastKey = key;
+    clearTimeout(debounce);
+    debounce = setTimeout(() => generatePreview(marca, ano, modelo, cor), 700);
+  }
+
+  function showLoading(marca, modelo) {
+    document.getElementById('ai-preview-box').innerHTML = `
+      <div class="ai-loading">
+        <div class="spinner"></div>
+        <div>
+          <div class="ai-loading-label">Gerando com IA</div>
+          <div class="ai-loading-sub">${marca} ${modelo} · Aguarde...</div>
+        </div>
+      </div>`;
+  }
+
+  async function generatePreview(marca, ano, modelo, cor) {
+    showLoading(marca, modelo);
+    const sys = `Você é um especialista em automóveis vendidos no Brasil. Responda SOMENTE com JSON válido, sem markdown, sem texto adicional.`;
+    const usr = `Carro: ${marca} ${modelo} ${ano} na cor ${cor}, mercado brasileiro.
+Retorne este JSON exato:
+{
+  "descricao": "2-3 frases descrevendo o visual lateral do carro, destacando linhas de design, perfil, detalhes da carroceria e como a cor ${cor} se manifesta no veículo",
+  "tipo": "categoria (ex: Sedan, SUV, Hatchback, Picape, Cupê)",
+  "motor": "motorização mais comum deste modelo (ex: 1.0 Turbo 128cv)",
+  "carroceria": "perfil (ex: 4 portas, linhas esportivas, teto rebaixado)",
+  "destaque": "característica visual mais marcante deste modelo específico",
+  "prompt_en": "professional car photography, side view of a ${ano} ${marca} ${modelo} in ${cor} color, facing left, showroom garage with industrial overhead lighting, photorealistic 8k, rim level angle, crisp details, dramatic shadows"
+}`;
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 900,
+          system: sys,
+          messages: [{ role: 'user', content: usr }]
+        })
+      });
+      const data  = await res.json();
+      const raw   = data.content?.find(b => b.type === 'text')?.text || '';
+      const clean = raw.replace(/```json|```/g, '').trim();
+      const d     = JSON.parse(clean);
+      renderPreview(marca, ano, modelo, cor, d);
+    } catch (e) {
+      document.getElementById('ai-preview-box').innerHTML = `
+        <div class="ai-empty">
+          <span class="ai-empty-icon">⚠️</span>
+          <div class="ai-empty-title">Erro ao gerar preview</div>
+          <div class="ai-empty-sub" style="color:#444;">${e.message}</div>
+        </div>`;
+    }
+  }
+
+  function renderPreview(marca, ano, modelo, cor, d) {
+    const safeNames = [marca, modelo, cor].map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    let desc = d.descricao || '';
+    safeNames.forEach(n => { desc = desc.replace(new RegExp(n, 'gi'), `<em>${n}</em>`); });
+    document.getElementById('ai-preview-box').innerHTML = `
+      <div class="ai-result-card">
+        <div class="ai-card-header">
+          <span class="ai-badge">✦ IA</span>
+          <div class="ai-card-title">${marca} ${modelo} ${ano}</div>
+          <span class="ai-card-sub">${cor}</span>
+        </div>
+        <div class="ai-description">${desc}</div>
+        <div class="ai-specs">
+          <div class="ai-spec"><div class="ai-spec-label">Categoria</div><div class="ai-spec-value">${d.tipo || '—'}</div></div>
+          <div class="ai-spec"><div class="ai-spec-label">Motor</div><div class="ai-spec-value">${d.motor || '—'}</div></div>
+          <div class="ai-spec"><div class="ai-spec-label">Carroceria</div><div class="ai-spec-value">${d.carroceria || '—'}</div></div>
+          <div class="ai-spec"><div class="ai-spec-label">Destaque</div><div class="ai-spec-value">${d.destaque || '—'}</div></div>
+        </div>
+        <div class="ai-prompt-bar">
+          <div class="ai-prompt-text" id="base-prompt">${d.prompt_en || ''}</div>
+          <button class="copy-btn"
+            onclick="navigator.clipboard.writeText(document.getElementById('base-prompt').innerText).then(()=>showToast('✅ Prompt copiado!'))">
+            Copiar
+          </button>
+        </div>
+        <div class="wheel-note"><span>●</span> Selecione uma roda abaixo para gerar o prompt completo com a personalização</div>
+      </div>`;
+  }
+
+  // Generate final prompt
+  function generateModeloResult() {
+    const marca  = document.getElementById('marca').value;
+    const ano    = document.getElementById('ano').value;
+    const modelo = document.getElementById('modelo-car').value;
+    const cor    = document.getElementById('cor').value;
+    if (!marca || !ano || !modelo || !cor) { showToast('⚠️ Preencha os 4 campos'); return; }
+    if (!selectedWheel)                    { showToast('⚠️ Selecione uma roda');    return; }
+
+    const w      = selectedWheel;
+    const carDesc = `${marca} ${modelo} ${ano}`;
+    const prompt =
+      `Side view of a ${ano} ${marca} ${modelo} in ${cor} color, facing left. ` +
+      `Replace the factory wheels with ${w.name} ${w.size} aftermarket rims. ` +
+      `Industrial showroom garage background with dramatic overhead spotlights and reflective concrete floor. ` +
+      `Photorealistic, 8K resolution, professional automotive photography, rim-level camera angle, ` +
+      `cinematic lighting, hyper-detailed rim spokes and tire sidewall.`;
+
+    document.getElementById('modelo-prompt-text').textContent = prompt;
+    document.getElementById('result-title').textContent  = `${carDesc} · ${cor}`;
+    document.getElementById('result-wheel').textContent  = `${w.name} · ${w.size} · R$ ${w.price.toLocaleString('pt-BR')}`;
+
+    const result = document.getElementById('modelo-result');
+    result.style.display = 'block';
+    result.scrollIntoView({ behavior: 'smooth' });
+    showToast('✅ Prompt completo gerado!');
+  }
+</script>
+</body>
+</html>

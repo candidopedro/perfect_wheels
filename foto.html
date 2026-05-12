@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Por Foto — RodaPerfeita</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">RODA<span>PERFEITA</span></a>
+  <div class="nav-links">
+    <a href="index.html#escolher" class="active">Personalizar</a>
+    <a href="#">Catálogo</a>
+    <a href="#">Contato</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <a class="back-btn" href="index.html#escolher">←</a>
+  <h1>Por <span>Foto</span></h1>
+</div>
+
+<div class="section" style="padding-top:0;">
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step active"><span class="step-num">1</span><span>Foto</span></div>
+    <div class="step-divider"></div>
+    <div class="step"><span class="step-num">2</span><span>Faixa de preço</span></div>
+    <div class="step-divider"></div>
+    <div class="step"><span class="step-num">3</span><span>Roda</span></div>
+    <div class="step-divider"></div>
+    <div class="step"><span class="step-num">4</span><span>Prompt IA</span></div>
+  </div>
+
+  <!-- VIDEO GUIDE -->
+  <div class="video-guide">
+    <video class="videotutorial"
+      autoplay muted loop
+      poster="video/thumb_tutorial.png">
+      <source src="video/tutorial.mp4" type="video/mp4">
+    </video>
+    <div class="video-caption">
+      📐 Fotografe lateralmente com a frente para a esquerda, em formato <strong>16:9</strong>, com o carro completo no enquadramento.
+    </div>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="field-group">
+    <label class="field-label">Foto lateral do seu carro</label>
+    <div class="upload-zone">
+      <input type="file" accept="image/*" id="foto-input" onchange="handleFotoUpload(this)">
+      <span style="font-size:2rem;display:block;margin-bottom:0.8rem;" id="upload-icon">🖼️</span>
+      <div style="font-size:15px;font-weight:500;" id="upload-title">Clique ou arraste a foto aqui</div>
+      <div style="font-size:13px;color:var(--gray-mid);margin-top:4px;" id="upload-hint">JPG, PNG ou WEBP · Formato 16:9 recomendado</div>
+      <img id="upload-preview" class="upload-preview" alt="">
+    </div>
+  </div>
+
+  <!-- PRICE SLIDER -->
+  <div class="slider-wrap">
+    <div class="slider-header">
+      <label class="field-label">Faixa de preço das rodas</label>
+      <div class="slider-values">
+        <span class="slider-val" id="price-min">R$ 800</span>
+        <span style="color:#333;align-self:center;">—</span>
+        <span class="slider-val" id="price-max">R$ 8.000</span>
+      </div>
+    </div>
+    <div class="dual-range">
+      <div class="range-track"></div>
+      <div class="range-fill" id="range-fill"></div>
+      <input type="range" id="range-min" min="500" max="15000" step="100" value="800"
+             oninput="updateDualRange('range-min','range-max','price-min','price-max','range-fill')">
+      <input type="range" id="range-max" min="500" max="15000" step="100" value="8000"
+             oninput="updateDualRange('range-min','range-max','price-min','price-max','range-fill')">
+    </div>
+  </div>
+
+  <!-- WHEEL PICKER -->
+  <div class="field-group">
+    <label class="field-label">Escolha a roda</label>
+    <input type="text" class="wheel-search-input" id="wheel-search"
+           placeholder="Buscar por nome ou marca..."
+           oninput="renderWheelList('range-min','range-max','wheel-search','wheel-list')"
+           onfocus="openWheelList('range-min','range-max','wheel-search','wheel-list')"
+           onblur="closeWheelListDelay('wheel-list')">
+    <div class="wheel-list" id="wheel-list"></div>
+  </div>
+
+  <button class="btn-primary" onclick="generateFotoResult()" style="width:100%;margin-top:0.5rem;">
+    Gerar prompt para IA de imagem →
+  </button>
+
+  <!-- RESULT -->
+  <div class="result-section" id="foto-result" style="display:none;">
+    <div class="result-header">
+      <div class="result-car-name">Seu carro personalizado</div>
+      <div class="result-wheel-name" id="result-wheel">—</div>
+    </div>
+    <div class="result-body">
+      <label class="field-label" style="margin-bottom:0.6rem;">Prompt para IA de imagem (inglês)</label>
+      <div class="result-prompt" id="foto-prompt-text"></div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <button class="copy-btn" onclick="copyEl('foto-prompt-text')">Copiar prompt</button>
+      </div>
+      <div class="alert" style="margin-top:1rem;">
+        💡 Cole este prompt no Midjourney, DALL-E 3 ou Stable Diffusion para gerar a imagem.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<footer><p>© 2025 RodaPerfeita · Para modelos comercializados no Brasil</p></footer>
+
+<script src="app.js"></script>
+<script>
+  // Init slider
+  updateDualRange('range-min', 'range-max', 'price-min', 'price-max', 'range-fill');
+
+  // Upload handler
+  function handleFotoUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const p = document.getElementById('upload-preview');
+      p.src = e.target.result;
+      p.style.display = 'block';
+      document.getElementById('upload-icon').textContent = '✅';
+      document.getElementById('upload-title').textContent = file.name;
+      document.getElementById('upload-hint').textContent = 'Foto carregada com sucesso';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Generate result
+  function generateFotoResult() {
+    const preview = document.getElementById('upload-preview');
+    if (!preview.src || preview.style.display === 'none') {
+      showToast('⚠️ Faça upload da foto do seu carro');
+      return;
+    }
+    if (!selectedWheel) {
+      showToast('⚠️ Selecione uma roda');
+      return;
+    }
+    const w = selectedWheel;
+    const prompt =
+      `Side view of the car shown in the uploaded photo, facing left. ` +
+      `Replace the original wheels with ${w.name} ${w.size} aftermarket rims. ` +
+      `Industrial showroom garage background with dramatic overhead spotlights and reflective concrete floor. ` +
+      `Maintain the exact car model, color, year and condition from the photo. ` +
+      `Photorealistic, 8K resolution, professional automotive photography, rim-level camera angle, studio lighting with sharp rim detail.`;
+
+    document.getElementById('foto-prompt-text').textContent = prompt;
+    document.getElementById('result-wheel').textContent =
+      `${w.name} · ${w.size} · R$ ${w.price.toLocaleString('pt-BR')}`;
+
+    const result = document.getElementById('foto-result');
+    result.style.display = 'block';
+    result.scrollIntoView({ behavior: 'smooth' });
+    showToast('✅ Prompt gerado!');
+  }
+</script>
+</body>
+</html>

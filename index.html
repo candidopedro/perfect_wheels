@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PerfectWheels — Encontre a roda ideal para o seu carro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">Perfect<span>Wheels</span></a>
+  <div class="nav-links">
+    <a href="index.html#escolher">Personalizar</a>
+    <a href="#">Catálogo</a>
+    <a href="#">Contato</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <img class ="imagem_fundo" src="img/polo_home.png" alt="">  
+  <div class="hero-wheel">
+      
+  </div>
+  <div class="hero-content">
+    <div class="hero-label">Personalização automotiva</div>
+    <h1 class="hero-title">A RODA<br>IDEAL<br><span class="accent">PARA O SEU CARRO</span></h1>
+    <p class="hero-sub">Selecione seu carro e a IA gera automaticamente um preview detalhado com as especificações do modelo e um prompt profissional para visualização com rodas novas.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#escolher">Começar agora</a>
+      <a class="btn-secondary" href="#escolher">Explorar</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── ESCOLHER MÉTODO ── -->
+<section id="escolher">
+  <div class="page-header" style="padding-top:5rem;">
+    <h1>Escolha o <span>método</span></h1>
+  </div>
+  <div class="section" style="padding-top:1rem;">
+    <p style="color:var(--gray-mid);font-size:15px;font-weight:300;max-width:480px;margin-bottom:0;">
+      Como você prefere visualizar as rodas no seu carro? Escolha o método que funciona melhor para você.
+    </p>
+    
+    <!--POR FOTO-->
+    <div class="choice-grid">
+      <a class="choice-card" href="foto.html">
+        <span class="choice-num">01</span>
+        <span class="choice-icon">
+          <img class="iconeporfoto" src="icon/cam.png" alt="">
+        </span>
+        <div class="choice-title">Por Foto</div>
+        <p class="choice-desc">Faça upload de uma foto lateral do seu carro e veja como as rodas ficam em cima da sua imagem real.</p>
+        <div class="choice-arrow">Usar minha foto</div>
+      </a>
+
+      <!--POR MODELO-->
+      <a class="choice-card" href="modelo.html">
+        <span class="choice-num">02</span>
+        <span class="choice-icon"></span>
+          <img class="iconepormodelo" src="icon/car.png" alt="">
+        <div class="choice-title">Por Modelo</div>
+        <p class="choice-desc">Selecione a marca, ano, modelo e cor do seu carro para ver uma simulação gerada por IA com o background de garagem.</p>
+        <div class="choice-arrow">Selecionar modelo</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+<footer><p>© 2026 Pedro Henrique · Todos os direitos reservados</p></footer>
+
+<script src="app.js"></script>
+</body>
+</html>
